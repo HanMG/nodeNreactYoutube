@@ -3,11 +3,11 @@ const Schema = mongoose.Schema;
 
 
 const subscriberSchema = mongoose.Schema({
-    userTo:{
+    userTo: {
         type: Schema.Types.ObjectId,
         ref: 'User'
     },
-    userFrom:{
+    userFrom: {
         type: Schema.Types.ObjectId,
         ref: 'User'
     }
