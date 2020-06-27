@@ -128,6 +128,7 @@ router.post('/getSubscriptionVideos', (req, res) => {
              })
 
              // 2. 찾은 사람들의 비디오를 가지고 온다.
+             //  $in이라는 몽고DB기능을 이용해 여러명의 ID를 가져옴, populate를 이용해 writer에 관련된 모든 정보를 가져옴
              Video.find({writer: { $in: subscribedUser  }})
                 .populate('writer')
                 .exec((err, videos) => {
