@@ -11,6 +11,7 @@ function VideoDetailPage(props) {
     const videoId = props.match.params.videoId
     const variable = {videoId: videoId}
     const [VideoDetail, setVideoDetail] = useState([])
+    //const [Comments, setComments] = useState([])
     
     useEffect(() => {
         Axios.post('/api/video/getVideoDetail',  variable)
@@ -43,7 +44,7 @@ function VideoDetailPage(props) {
                         </List.Item>
 
                         {/* Conments */}
-                        <Comment />
+                        <Comment postId={videoId} />
                     </div>
                 </Col>
                 <Col lg={6} xs={24}>
