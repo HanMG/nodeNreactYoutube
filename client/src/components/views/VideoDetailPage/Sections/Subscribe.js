@@ -46,7 +46,7 @@ function Subscribe(props) {
             userTo: userTo,
             userFrom: userFrom
         }
-        console.log(subscribeNumberVariables)
+        //console.log(subscribeNumberVariables)
 
         // 구독자 수 
         Axios.post('/api/subscribe/subscribeNumber', subscribeNumberVariables)
