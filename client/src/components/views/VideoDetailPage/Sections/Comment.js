@@ -2,23 +2,25 @@ import React,{useState, useEffect} from 'react'
 import Axios from 'axios'
 import { useSelector } from 'react-redux'
 import SingleComment from './SingleComment'
+import ReplyComment from './ReplyComment'
 
 function Comment(props) {
 
-    const videoId = props.postId;
+    const postId = props.postId;
     const user = useSelector(state => state.user);
-    const [commentValue, setcommentValue] = useState("")
+    const [CommentValue, setCommentValue] = useState("")
 
-    const handleClick = (event) => {
-        setcommentValue(event.currentTarget.value)
+    const handleChange = (event) => {
+        setCommentValue(event.currentTarget.value)
     }   
+
     const onSubmit = (event) =>{
         event.preventDefault();
 
         const variables = {
-            content: commentValue,
+            content: CommentValue,
             writer: user.userData._id,
-            postId: videoId
+            postId: postId
         }
 
         Axios.post('/api/comment/saveComment',variables)
@@ -26,7 +28,7 @@ function Comment(props) {
                 if(response.data.success){
                     //console.log(response.data.result)
                     // 댓글 등록시 textarea 초기화
-                    setcommentValue("")
+                    setCommentValue("")
                     props.refreshFunction(response.data.result)
                 }else{
                     alert('코멘트를 저장하지 못했습니다.')
@@ -43,7 +45,11 @@ function Comment(props) {
             {/* Comment List */}
             {props.commentLists && props.commentLists.map((comment, index)=>(
                 (!comment.responseTo &&
-                     <SingleComment refreshFunction={props.refreshFunction} comment={comment} postId={videoId} />
+                    // div 혹은 react.fragment를 안하면 에러가뜸.
+                    <React.Fragment>
+                        <SingleComment comment={comment} postId={postId} refreshFunction={props.refreshFunction}/>
+                        <ReplyComment commentLists={props.commentLists} postId={postId} parentCommentId={comment._id} refreshFunction={props.refreshFunction} />
+                    </React.Fragment>
                 )
             ))}
             {/* Root Comment Form */}
@@ -51,8 +57,8 @@ function Comment(props) {
             <form style={{display: 'flex'}} onSubmit={onSubmit}>
                 <textarea 
                     style={{width: '100%', borderRadius: '5px'}}
-                    onChange={handleClick}
-                    value={commentValue}
+                    onChange={handleChange}
+                    value={CommentValue}
                     placeholder="코멘트를 작성해주세요."
                 />                
                 <br/>

@@ -16,7 +16,7 @@ function SingleComment(props) {
     }
 
     const onHandleChange = (event) =>{
-        setCommentValue(event.currentTarget.CommentValue)
+        setCommentValue(event.currentTarget.value)
     }
 
     const onSubmit = (event) =>{
@@ -26,8 +26,8 @@ function SingleComment(props) {
         const variables = {
             content: CommentValue,
             writer: user.userData._id,
-            postId: props.videoId,           
-            reponseTo: props.comment._id
+            postId: props.postId,           
+            responseTo: props.comment._id
         }
 
         Axios.post('/api/comment/saveComment',variables)
@@ -36,6 +36,7 @@ function SingleComment(props) {
                     console.log(response.data.result)
                     // 댓글 등록시 textarea 초기화
                     setCommentValue("")
+                    setOpenReply(!OpenReply)
                     props.refreshFunction(response.data.result)
                 }else{
                     alert('코멘트를 저장하지 못했습니다.')
@@ -54,20 +55,20 @@ function SingleComment(props) {
             <Comment
                 actions={actions}
                 author={props.comment.writer.name}
-                avatar={<Avatar src={props.comment.writer.image} alt />}
+                avatar={<Avatar src={props.comment.writer.image} alt='image' />}
                 content={<p>{props.comment.content}</p>}
             />
             {OpenReply &&
-            <form style={{display: 'flex'}} onSubmit={onSubmit}>
-                <textarea 
-                    style={{width: '100%', borderRadius: '5px'}}
-                    onChange={onHandleChange}
-                    value={CommentValue}
-                    placeholder="코멘트를 작성해주세요."
-                />                
-                <br/>
-                <button style={{width:'20%', height: '52px'}} onClick={onSubmit} >Submit</button>
-            </form>    
+                <form style={{display: 'flex'}} onSubmit={onSubmit}>
+                    <textarea 
+                        style={{width: '100%', borderRadius: '5px'}}
+                        onChange={onHandleChange}
+                        value={CommentValue}
+                        placeholder="코멘트를 작성해주세요."
+                    />                
+                    <br/>
+                    <button style={{width:'20%', height: '52px'}} onClick={onSubmit} >Submit</button>
+                </form>    
             }
         </div>
     )
