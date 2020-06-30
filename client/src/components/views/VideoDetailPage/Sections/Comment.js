@@ -45,7 +45,7 @@ function Comment(props) {
             {props.commentLists && props.commentLists.map((comment, index)=>(
                 (!comment.responseTo &&
                     // div 혹은 react.fragment를 안하면 에러가뜸.
-                    <React.Fragment>
+                    <React.Fragment key={comment._id}>
                         <SingleComment comment={comment} postId={postId} refreshFunction={props.refreshFunction}/>
                         <ReplyComment commentLists={props.commentLists} postId={postId} parentCommentId={comment._id} refreshFunction={props.refreshFunction} />
                     </React.Fragment>
@@ -55,7 +55,7 @@ function Comment(props) {
 
             <form style={{display: 'flex'}} onSubmit={onSubmit}>
                 <textarea 
-                    style={{width: '100%', borderRadius: '5px'}}
+                    style={{width: '100%', borderRadius: '5px', resize: 'none'}}
                     onChange={handleChange}
                     value={CommentValue}
                     placeholder="코멘트를 작성해주세요."
