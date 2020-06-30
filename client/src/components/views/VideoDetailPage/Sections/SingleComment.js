@@ -2,10 +2,12 @@ import React,{useState,useEffect} from 'react'
 import {Comment, Avatar, Button, Input} from 'antd'
 import Axios from 'axios'
 import { useSelector } from 'react-redux'
+import LikeDislike from './LikeDislike'
 
 const { TextArea } = Input;
 
-function SingleComment(props) {
+function SingleComment(props) {    
+
     const user = useSelector(state => state.user);
     
     const [OpenReply, setOpenReply] = useState(false)
@@ -47,6 +49,7 @@ function SingleComment(props) {
     }
 
     const actions = [
+        <LikeDislike userId={localStorage.getItem('userId')} commentId={props.comment._id} writerId={props.comment.writer._id}/>,
         <span onClick={onClickReplyOpen} key="comment-basic-reply-to">Reply to</span>
     ]
 
